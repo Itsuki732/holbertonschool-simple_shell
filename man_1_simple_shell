@@ -1,0 +1,67 @@
+.TH Simple_Shell "15/12/2025 -> 09/01/2025" "version 1.0" "Holberton School Project"
+
+.SH NAME
+Simple_Shell \- A simple custom shell implementation
+
+.SH SYNOPSIS
+.B ./hsh
+.RI [command]
+.br
+or in non-interactive mode:
+.br
+.B echo
+"cmd" | executable name
+
+.SH DESCRIPTION
+.B Simple_Shell
+is a small command-line interpreter written in C.
+
+It is able to:
+.IP \[bu] 2
+Display a prompt and read from standard input.
+.IP \[bu] 2
+Execute commands found in the current directory or in the PATH.
+.IP \[bu] 2
+Support arguments for commands.
+.IP \[bu] 2
+Handle environment variables (custom
+.I getenv
+and
+.I env
+printing).
+.IP \[bu] 2
+Work in interactive and non-interactive modes.
+
+.SH BUILT-IN COMMANDS
+.TP
+.B exit
+Exit the shell.
+.TP
+.B env
+Print the current environment.
+
+
+.SH RETURN VALUE
+The shell returns the exit status of the last executed command.
+In case of failure, an appropriate error code is returned.
+
+.SH EXAMPLES
+Example of interactive mode:
+.EX
+$ ./hsh
+My_Simple_Shell> pwd
+/root/holbertonschool-simple_shell
+My_Simple_Shell> exit
+.EE
+
+Example of non-interactive mode:
+.EX
+$ echo "ls -l" | ./hsh
+total 8
+-rw-r--r-- 1 user user  1234 Aug 19 10:00 main.c
+...
+.EE
+
+.SH AUTHORS
+Written by Cécile Laroche, Thomas Sorli and Esteban Levy
+as part of the Holberton School low-level programming curriculum.
