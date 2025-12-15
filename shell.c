@@ -25,6 +25,13 @@ int main(void)
 		}
 
 		parse_args(buffer, args);
+
+		if (args[0] && strcmp(args[0], "exit") == 0)
+		{
+			free(buffer);
+			exit(0);
+		}
+
 		execute_command(args);
 
 		free(buffer);
