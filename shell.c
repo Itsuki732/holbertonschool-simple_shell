@@ -4,42 +4,29 @@
 
 int main(void)
 {
-	char *line = NULL;
-	size_t len = 0;
-	pid_t pid;
+	char *buffer;
+	char *args[MAX_ARGS];
 
 	while (1)
 	{
-		write(1, "#cisfun$ ", 9);
+		write(STDOUT_FILENO, "#cisfun$ ", 9);
 
-		if (getline(&line, &len, stdin) == -1)
+		buffer = read_input();
+		if (!buffer)
 		{
-			write(1, "\n", 1);
-			free(line);
+			write(STDOUT_FILENO, "\n", 1);
 			return (0);
 		}
 
-		line[strcspn(line, "\n")] = '\0';
-
-		if (line[0] == '\0')
+		if (buffer[0] == '\0')
+		{
+			free(buffer);
 			continue;
-
-		pid = fork();
-
-		if (pid == 0)
-		{
-			char *argv[2];
-
-			argv[0] = line;
-			argv[1] = NULL;
-
-			execve(line, argv, environ);
-			perror("./shell");
-			exit(1);
 		}
-		else
-		{
-			wait(NULL);
-		}
+
+		parse_args(buffer, args);
+		execute_command(args);
+
+		free(buffer);
 	}
 }
