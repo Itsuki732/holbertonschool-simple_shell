@@ -1,42 +1,39 @@
 #include "shell.h"
 
+/***/
+
 int main(void)
 {
-    char *buffer = NULL;
-    size_t size = 0;
-    pid_t pid;
-    char *args[2];
+	char *buffer;
+	char *args[MAX_ARGS];
 
-    while (1)
-    {
-        write(STDOUT_FILENO, "#cisfun$ ", 9);
+	while (1)
+	{
+		write(STDOUT_FILENO, "#cisfun$ ", 9);
 
-        if (getline(&buffer, &size, stdin) == -1)
-        {
-            write(STDOUT_FILENO, "\n", 1);
-            free(buffer);
-            return (0);
-        }
+		buffer = read_input();
+		if (!buffer)
+		{
+			write(STDOUT_FILENO, "\n", 1);
+			return (0);
+		}
 
-        buffer[strcspn(buffer, "\n")] = '\0';
+		if (buffer[0] == '\0')
+		{
+			free(buffer);
+			continue;
+		}
 
-        if (buffer[0] == '\0')
-            continue;
+		parse_args(buffer, args);
 
-        pid = fork();
+		if (args[0] && strcmp(args[0], "exit") == 0)
+		{
+			free(buffer);
+			exit(0);
+		}
 
-        if (pid == 0)
-        {
-            args[0] = buffer;
-            args[1] = NULL;
+		execute_command(args);
 
-            execve(args[0], args, environ);
-            perror("./shell");
-            exit(1);
-        }
-        else
-        {
-            wait(NULL);
-        }
-    }
+		free(buffer);
+	}
 }
