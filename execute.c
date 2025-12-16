@@ -1,7 +1,11 @@
 #include "shell.h"
 
-/***/
-
+/**
+ * execute_command - executes a command using fork and exec
+ * @args: array of command arguments
+ *
+ * Return: Nothing
+ */
 void execute_command(char **args)
 {
 	pid_t pid = fork();
@@ -17,3 +21,4 @@ void execute_command(char **args)
 		wait(NULL);
 	}
 }
+
