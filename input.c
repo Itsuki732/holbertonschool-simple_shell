@@ -1,7 +1,10 @@
 #include "shell.h"
 
-/***/
-
+/**
+ * read_input - reads a line from standard input
+ *
+ * Return: pointer to the input string, or NULL on failure or EOF
+ */
 char *read_input(void)
 {
 	char *buffer = NULL;

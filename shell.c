@@ -1,24 +1,36 @@
 #include "shell.h"
 
-/***/
-
+/**
+ * main - Entry point of the simple shell
+ *
+ * Return: Always 0
+ */
 int main(void)
 {
 	char *buffer;
 	char *args[MAX_ARGS];
+	int i;
 
 	while (1)
 	{
-		write(STDOUT_FILENO, "#cisfun$ ", 9);
+		/* Display prompt only in interactive mode */
+		if (isatty(STDIN_FILENO))
+			write(STDOUT_FILENO, "#cisfun$ ", 9);
 
 		buffer = read_input();
-		if (!buffer)
+		if (buffer == NULL)
 		{
-			write(STDOUT_FILENO, "\n", 1);
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
 			return (0);
 		}
 
-		if (buffer[0] == '\0')
+		/* Ignore lines with only spaces or tabs */
+		i = 0;
+		while (buffer[i] == ' ' || buffer[i] == '\t')
+			i++;
+
+		if (buffer[i] == '\0')
 		{
 			free(buffer);
 			continue;
@@ -26,7 +38,14 @@ int main(void)
 
 		parse_args(buffer, args);
 
-		if (args[0] && strcmp(args[0], "exit") == 0)
+		if (args[0] == NULL)
+		{
+			free(buffer);
+			continue;
+		}
+
+		/* Built-in exit (allowed even if not required) */
+		if (strcmp(args[0], "exit") == 0)
 		{
 			free(buffer);
 			exit(0);
@@ -36,4 +55,6 @@ int main(void)
 
 		free(buffer);
 	}
+
+	return (0);
 }
