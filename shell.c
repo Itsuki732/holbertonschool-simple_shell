@@ -7,54 +7,57 @@
  */
 int main(void)
 {
-	char *buffer;
-	char *args[MAX_ARGS];
+	char *line = NULL;
+	size_t len = 0;
+	ssize_t read;
+	char *args[1024];
 	int i;
 
 	while (1)
 	{
-		/* Display prompt only in interactive mode */
+		/* Prompt only in interactive mode */
 		if (isatty(STDIN_FILENO))
 			write(STDOUT_FILENO, "#cisfun$ ", 9);
 
-		buffer = read_input();
-		if (buffer == NULL)
+		read = getline(&line, &len, stdin);
+		if (read == -1)
 		{
 			if (isatty(STDIN_FILENO))
 				write(STDOUT_FILENO, "\n", 1);
-			return (0);
+			free(line);
+			exit(0);
 		}
 
-		/* Ignore lines with only spaces or tabs */
+		/* Ignore empty lines / spaces */
 		i = 0;
-		while (buffer[i] == ' ' || buffer[i] == '\t')
+		while (line[i] == ' ' || line[i] == '\t')
 			i++;
 
-		if (buffer[i] == '\0')
-		{
-			free(buffer);
+		if (line[i] == '\n' || line[i] == '\0')
 			continue;
-		}
 
-		parse_args(buffer, args);
+		/* Parse arguments */
+		i = 0;
+		args[i] = strtok(line, " \t\n");
+		while (args[i])
+		{
+			i++;
+			args[i] = strtok(NULL, " \t\n");
+		}
 
 		if (args[0] == NULL)
-		{
-			free(buffer);
 			continue;
-		}
 
-		/* Built-in exit (allowed even if not required) */
+		/* Built-in exit */
 		if (strcmp(args[0], "exit") == 0)
 		{
-			free(buffer);
+			free(line);
 			exit(0);
 		}
 
 		execute_command(args);
-
-		free(buffer);
 	}
 
+	free(line);
 	return (0);
 }

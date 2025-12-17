@@ -1,18 +1,19 @@
 #ifndef SHELL_H
 #define SHELL_H
 
-#define MAX_ARGS 64
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#include <sys/wait.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
+#include <sys/stat.h>
+
+#define MAX_ARGS 1024
 
 extern char **environ;
 
 void execute_command(char **args);
-char *read_input(void);
-void parse_args(char *buffer, char **args);
+char *find_path(char *command);
 
-#endif
+#endif /* SHELL_H */
