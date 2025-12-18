@@ -1,29 +1,23 @@
 #include "shell.h"
 
 /**
- * execute_command - executes a command with arguments
- * @args: argument vector
+ * execute_command - executes a command using fork and exec
+ * @args: array of command arguments
+ *
+ * Return: Nothing
  */
 void execute_command(char **args)
 {
-	pid_t pid;
-	int status;
+	pid_t pid = fork();
 
-	pid = fork();
 	if (pid == 0)
 	{
-		if (execve(args[0], args, environ) == -1)
-		{
-			perror("./hsh");
-			exit(1);
-		}
-	}
-	else if (pid > 0)
-	{
-		wait(&status);
+		execvp(args[0], args);
+		perror("./shell");
+		exit(1);
 	}
 	else
 	{
-		perror("fork");
+		wait(NULL);
 	}
 }
