@@ -3,6 +3,7 @@
 /**
  * execute_command - execute a command
  * @args: argument list
+ * @shell: structur name
  */
 void execute_command(char **args, shell_t *shell)
 {

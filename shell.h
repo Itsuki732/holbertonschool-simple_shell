@@ -33,4 +33,10 @@ void parse_args(char *buffer, char **args);
 void execute_command(char **args, shell_t *shell);
 char *find_path(char *command);
 
+/* fonction du path.c */
+char *check_command_path(char *command);
+char *build_full_path(const char *dir, const char *command);
+char *search_in_path(char *command);
+char *find_path(char *command);
+
 #endif /* SHELL_H */

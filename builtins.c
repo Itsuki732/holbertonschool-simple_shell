@@ -2,6 +2,8 @@
 
 /**
  * builtin_exit - handle exit built-in
+ * @buffer: string containing the command line to release
+ * @shell: pointer to the shell state structure
  */
 void builtin_exit(char *buffer, shell_t *shell)
 {
