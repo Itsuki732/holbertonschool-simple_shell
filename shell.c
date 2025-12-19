@@ -22,8 +22,9 @@ int main(void)
 		buffer = read_input();
 		if (buffer == NULL)
 		{
-			write(STDOUT_FILENO, "\n", 1);
-			return (0);
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			exit(shell.last_status);
 		}
 
 		if (buffer[0] == '\0')
