@@ -4,7 +4,7 @@
  * execute_command - execute a command
  * @args: argument list
  */
-void execute_command(char **args)
+void execute_command(char **args, shell_t *shell)
 {
 	pid_t pid;
 	int status;
@@ -14,6 +14,7 @@ void execute_command(char **args)
 	if (cmd == NULL)
 	{
 		fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
+		shell->last_status = 2;
 		return;
 	}
 
@@ -23,9 +24,14 @@ void execute_command(char **args)
 		execve(cmd, args, environ);
 		exit(1);
 	}
-	else
+	else if (pid > 0)
 	{
-		wait(&status);
+		waitpid(pid, &status, 0);
+
+		if (WIFEXITED(status))
+			shell->last_status = WEXITSTATUS(status);
+		else
+			shell->last_status = 1;
 	}
 
 	free(cmd);

@@ -7,8 +7,12 @@
  */
 int main(void)
 {
+
 	char *buffer;
 	char *args[MAX_ARGS];
+	shell_t shell;
+
+	shell.last_status = 0;
 
 	while (1)
 	{
@@ -18,8 +22,9 @@ int main(void)
 		buffer = read_input();
 		if (buffer == NULL)
 		{
-			write(STDOUT_FILENO, "\n", 1);
-			return (0);
+			if (isatty(STDIN_FILENO))
+				write(STDOUT_FILENO, "\n", 1);
+			exit(shell.last_status);
 		}
 
 		if (buffer[0] == '\0')
@@ -37,7 +42,7 @@ int main(void)
 		}
 
 		if (strcmp(args[0], "exit") == 0)
-			builtin_exit(buffer);
+			builtin_exit(buffer, &shell);
 
 		if (strcmp(args[0], "env") == 0)
 		{
@@ -46,7 +51,7 @@ int main(void)
 			continue;
 		}
 
-		execute_command(args);
+		execute_command(args, &shell);
 		free(buffer);
 	}
 }
