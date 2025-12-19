@@ -14,6 +14,7 @@ void execute_command(char **args, shell_t *shell)
 	if (cmd == NULL)
 	{
 		fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
+		shell->last_status = 2;
 		return;
 	}
 
