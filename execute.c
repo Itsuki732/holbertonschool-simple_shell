@@ -26,7 +26,7 @@ void execute_command(char **args, shell_t *shell)
 	}
 	else if (pid > 0)
 	{
-		wait(&status);
+		waitpid(pid, &status, 0);
 
 		if (WIFEXITED(status))
 			shell->last_status = WEXITSTATUS(status);
