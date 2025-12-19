@@ -2,8 +2,11 @@
 
 /**/
 
+int last_status = 0;
+
 int main(void)
 {
+
 	char *buffer;
 	char *args[MAX_ARGS];
 

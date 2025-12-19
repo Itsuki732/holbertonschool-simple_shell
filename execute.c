@@ -1,23 +1,37 @@
 #include "shell.h"
 
 /**
- * execute_command - executes a command using fork and exec
- * @args: array of command arguments
- *
- * Return: Nothing
+ * execute_command - execute a command
+ * @args: argument list
  */
 void execute_command(char **args)
 {
-	pid_t pid = fork();
+	pid_t pid;
+	int status;
+	char *cmd;
 
+	cmd = find_path(args[0]);
+	if (cmd == NULL)
+	{
+		fprintf(stderr, "./hsh: 1: %s: not found\n", args[0]);
+		return;
+	}
+
+	pid = fork();
 	if (pid == 0)
 	{
-		execvp(args[0], args);
-		perror("./shell");
+		execve(cmd, args, environ);
 		exit(1);
 	}
-	else
+	else if (pid > 0)
 	{
-		wait(NULL);
+		wait(&status);
+
+		if (WIFEXITED(status))
+			last_status = WEXITSTATUS(status);
+		else
+			last_status = 1;
 	}
+
+	free(cmd);
 }

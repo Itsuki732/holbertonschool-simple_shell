@@ -12,6 +12,7 @@
 #define MAX_ARGS 64
 
 extern char **environ;
+extern int last_status;
 
 /* built-ins */
 void builtin_exit(char *buffer);
