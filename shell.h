@@ -12,16 +12,25 @@
 #define MAX_ARGS 64
 
 extern char **environ;
-extern int last_status;
+
+/**
+ * struct shell_s - shell context
+ * @last_status: status of last executed command
+ */
+typedef struct shell_s
+{
+	int last_status;
+} shell_t;
+
 
 /* built-ins */
-void builtin_exit(char *buffer);
+void builtin_exit(char *buffer, shell_t *shell);
 void builtin_env(void);
 
 /* autre fonction */
 char *read_input(void);
 void parse_args(char *buffer, char **args);
-void execute_command(char **args);
+void execute_command(char **args, shell_t *shell);
 char *find_path(char *command);
 
 #endif /* SHELL_H */

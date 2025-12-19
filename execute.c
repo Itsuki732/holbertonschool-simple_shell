@@ -4,7 +4,7 @@
  * execute_command - execute a command
  * @args: argument list
  */
-void execute_command(char **args)
+void execute_command(char **args, shell_t *shell)
 {
 	pid_t pid;
 	int status;
@@ -28,9 +28,9 @@ void execute_command(char **args)
 		wait(&status);
 
 		if (WIFEXITED(status))
-			last_status = WEXITSTATUS(status);
+			shell->last_status = WEXITSTATUS(status);
 		else
-			last_status = 1;
+			shell->last_status = 1;
 	}
 
 	free(cmd);

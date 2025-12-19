@@ -3,10 +3,13 @@
 /**
  * builtin_exit - handle exit built-in
  */
-void builtin_exit(char *buffer)
+void builtin_exit(char *buffer, shell_t *shell)
 {
+	int status;
+
+	status = shell->last_status;
 	free(buffer);
-	exit(last_status);
+	exit(status);
 }
 
 /**
