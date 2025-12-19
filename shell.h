@@ -13,16 +13,14 @@
 
 extern char **environ;
 
-/* input.c */
+/* built-ins */
+void builtin_exit(char *buffer);
+void builtin_env(void);
+
+/* autre fonction */
 char *read_input(void);
-
-/* parser.c */
 void parse_args(char *buffer, char **args);
-
-/* execute_command.c */
 void execute_command(char **args);
-
-/* path.c */
 char *find_path(char *command);
 
 #endif /* SHELL_H */
