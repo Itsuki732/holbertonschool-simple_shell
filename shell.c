@@ -1,3 +1,7 @@
+#include "shell.h"
+
+/**/
+
 int main(void)
 {
 	char *buffer;

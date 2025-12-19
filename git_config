@@ -1,3 +1,0 @@
-#!/bin/bash
-git config --global user.name Bryan
-git config --global user.email bryanmartel.po@gmial.com

@@ -6,7 +6,7 @@
 void builtin_exit(char *buffer)
 {
 	free(buffer);
-	exit(0);
+	exit(last_status);
 }
 
 /**
